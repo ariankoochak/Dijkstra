@@ -14,11 +14,21 @@ int Graph[Edge_num][3] = {
     {4, 5, 9},
 };
 
-int Neighbors[Vertex_num][Vertex_num] = {-1};
+int Neighbors[Vertex_num][Vertex_num] = {
+    {1,2,5},
+    {0,2,3},
+    {0,1,3,5},
+    {1,2,4},
+    {3,5},
+    {0,2,4}
+};
 int Dist[Vertex_num] = {10000};
 int Prev[Vertex_num] = {-1};
 int q[Vertex_num];
+int origin;
 int main()
 {
-    
+    cin>>origin;
+    q[origin] = -1;
+    Dist[origin] = 0;
 }
