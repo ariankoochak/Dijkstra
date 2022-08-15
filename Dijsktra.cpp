@@ -1,5 +1,4 @@
 #include <iostream>
-#include <algorithm>
 using namespace std;
 ///////////////////////////////////////Graph Data
 const int Vertex_num = 6;
@@ -48,10 +47,23 @@ void SetNeighbors(){
 void PrevAndDistSet(){
     for(int i = 0;i < Vertex_num;i++){
         Dist[i] = 1000000;
+        q[i] = 1;
     }
     Dist[origin] = 0;
     Prev[origin] = -1;
-    q[origin] = -1;
+    q[origin] = 0;
+}
+
+int NextVertexSelector(int NowPoint){
+    int res;
+    int min = 1000000;
+    for(int i = 0;Neighbors[NowPoint][i] != -1;i++){
+        if(q[Neighbors[NowPoint][i]] != 0 && min < Dist[Neighbors[NowPoint][i]]){
+            min = min < Dist[Neighbors[NowPoint][i]];
+            res = Neighbors[NowPoint][i];
+        }
+    }
+    return res;
 }
 ////////////////////////////////////////////////////
 
@@ -59,7 +71,10 @@ void PrevAndDistSet(){
 ////////////////////////////////////////////////Main
 int main()
 {
-    cin >> origin;
+    cout << "\nf\n\n\n\n";
+    //cin >> origin;
+    Dist[5] = 14;
+    cout<<NextVertexSelector(0); 
     SetNeighbors();
     PrevAndDistSet();
 
