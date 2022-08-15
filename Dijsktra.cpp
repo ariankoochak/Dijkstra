@@ -58,7 +58,7 @@ int NextVertexSelector(int NowPoint){
     int res;
     int min = 1000000;
     for(int i = 0;Neighbors[NowPoint][i] != -1;i++){
-        if(q[Neighbors[NowPoint][i]] != 0 && min < Dist[Neighbors[NowPoint][i]]){
+        if(q[Neighbors[NowPoint][i]] != 0 && min > Dist[Neighbors[NowPoint][i]]){
             min = min < Dist[Neighbors[NowPoint][i]];
             res = Neighbors[NowPoint][i];
         }
