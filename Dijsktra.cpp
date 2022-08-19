@@ -65,8 +65,6 @@ int NextVertexSelector(int NowPoint){
     }
     return res;
 }
-
-
 ////////////////////////////////////////////////////
 
 
