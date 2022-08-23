@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string.h>
+
 using namespace std;
 ///////////////////////////////////////Graph Data
 const int Vertex_num = 6;
@@ -126,21 +127,32 @@ void MakeRoad()
             cout << ReRoad[i];
     }
 }
+bool Validation(){
+    for(int i = 0;i < Edge_num;i++){
+        if(Graph[i][0] == Graph[i][1] || Graph[i][2] <= 0)
+            return false;
+    }
+    return true;
+}
 ////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////Main
 int main()
 {
-    cout << "Enter Your Starter Point : ";
-    cin >> origin;
-    cout << "Enter Your final Point : ";
-    cin >> dest;
-    SetNeighbors();
-    PreSet();
-    while (CheckNull())
-    {
-        CheckNeighbors();
-        origin = NextVertexSelector();
+    if(Validation()){
+        cout << "Enter Your Starter Point : ";
+        cin >> origin;
+        cout << "Enter Your final Point : ";
+        cin >> dest;
+        SetNeighbors();
+        PreSet();
+        while (CheckNull())
+        {
+            CheckNeighbors();
+            origin = NextVertexSelector();
+        }
+        MakeRoad();
     }
-    MakeRoad();
+    else
+        cout<<"Your Graph its wrong";
 }
