@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string.h>
 using namespace std;
 ///////////////////////////////////////Graph Data
 const int Vertex_num = 6;
@@ -16,18 +17,17 @@ int Graph[Edge_num][3] = {
 };
 /////////////////////////////////////////////////
 
-
 //////////////////////////////////Array & Variable
 int Neighbors[Vertex_num][Vertex_num];
 int Dist[Vertex_num];
 int Prev[Vertex_num];
 int q[Vertex_num];
-int origin;
+int origin, dest;
 //////////////////////////////////////////////////
 
-
 /////////////////////////////////////////Functions
-void SetNeighbors(){
+void SetNeighbors()
+{
     int counter[Vertex_num] = {0};
     for (int i = 0; i < Vertex_num; i++)
     {
@@ -36,7 +36,8 @@ void SetNeighbors(){
             Neighbors[i][j] = -1;
         }
     }
-    for(int i = 0; i < Edge_num;i++){
+    for (int i = 0; i < Edge_num; i++)
+    {
         Neighbors[Graph[i][0]][counter[Graph[i][0]]] = Graph[i][1];
         counter[Graph[i][0]]++;
         Neighbors[Graph[i][1]][counter[Graph[i][1]]] = Graph[i][0];
@@ -44,38 +45,102 @@ void SetNeighbors(){
     }
 }
 
-void PrevAndDistSet(){
-    for(int i = 0;i < Vertex_num;i++){
-        Dist[i] = 1000000;
-        q[i] = 1;
+void PreSet()
+{
+    for (int i = 0; i < Vertex_num; i++)
+    {
+        Dist[i] = 1000000000;
+        Prev[i] = -2;
+        q[i] = -1;
     }
     Dist[origin] = 0;
     Prev[origin] = -1;
-    q[origin] = 0;
 }
 
-int NextVertexSelector(int NowPoint){
-    int res;
-    int min = 1000000;
-    for(int i = 0;Neighbors[NowPoint][i] != -1;i++){
-        if(q[Neighbors[NowPoint][i]] != 0 && min > Dist[Neighbors[NowPoint][i]]){
-            min = min < Dist[Neighbors[NowPoint][i]];
-            res = Neighbors[NowPoint][i];
+int FindEdge(int m, int d)
+{
+    for (int i = 0; i < Edge_num; i++)
+    {
+        if (Graph[i][0] == m || Graph[i][1] == m)
+        {
+            if (Graph[i][1] == d || Graph[i][0] == d)
+                return Graph[i][2];
+        }
+    }
+    return -1;
+}
+
+void CheckNeighbors()
+{
+    for (int i = 0; Neighbors[origin][i] != -1; i++)
+    {
+        int n = Neighbors[origin][i];
+        if (Dist[n] > Dist[origin] + FindEdge(origin, n))
+        {
+            Dist[n] = Dist[origin] + FindEdge(origin, n);
+            Prev[n] = origin;
+        }
+    }
+    q[origin] = 1;
+}
+int NextVertexSelector()
+{
+    int min = 1000000000;
+    int res = -1;
+    for (int i = 0; i < Vertex_num; i++)
+    {
+        if (Dist[i] < min && q[i] == -1)
+        {
+            min = Dist[i];
+            res = i;
         }
     }
     return res;
 }
-////////////////////////////////////////////////////
 
+bool CheckNull()
+{
+    for (int i = 0; i < Vertex_num; i++)
+    {
+        if (q[i] == -1)
+            return true;
+    }
+    return false;
+}
+
+void MakeRoad()
+{
+    int ReRoad[Vertex_num];
+    int pointer = dest;
+    int i = 0;
+    for (i = 0; pointer != -1; i++)
+    {
+        ReRoad[i] = pointer;
+        pointer = Prev[pointer];
+    }
+    for (i--; i >= 0; i--)
+    {
+        if (i != 0)
+            cout << ReRoad[i] << " => ";
+        else
+            cout << ReRoad[i];
+    }
+}
+////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////Main
 int main()
 {
-    cout << "\nf\n\n\n\n";
-    //cin >> origin;
-    Dist[5] = 14;
-    cout<<NextVertexSelector(0); 
+    cout << "Enter Your Starter Point : ";
+    cin >> origin;
+    cout << "Enter Your final Point : ";
+    cin >> dest;
     SetNeighbors();
-    PrevAndDistSet();
-
+    PreSet();
+    while (CheckNull())
+    {
+        CheckNeighbors();
+        origin = NextVertexSelector();
+    }
+    MakeRoad();
 }
